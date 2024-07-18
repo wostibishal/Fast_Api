@@ -1,0 +1,8 @@
+pip install fastapi
+fist was to run as development server 
+fastapi dev main.py
+
+secand way to open it if you have install uvicorn as server 
+and it will reload every time when the file is saved
+using 
+uvicorn main:app --reload
