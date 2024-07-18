@@ -1,7 +1,9 @@
 from fastapi import FastAPI
+from .schemas import Blog
 
-app = FastAPI
+
+app = FastAPI()
 
 @app.post('/blog')
-def create():
-    return 'creating'
+def create(blog: Blog):
+    return blog
