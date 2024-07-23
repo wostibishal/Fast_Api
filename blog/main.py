@@ -60,3 +60,5 @@ def destroy(id, db:Session = Depends(get_db)):
     blog.delete(synchronize_session=False)
     db.commit()
     return 'done'
+
+#faisiua idia aosdoiasid oiah
