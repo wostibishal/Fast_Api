@@ -61,4 +61,3 @@ def destroy(id, db:Session = Depends(get_db)):
     db.commit()
     return 'done'
 
-#faisiua idia aosdoiasid oiah
