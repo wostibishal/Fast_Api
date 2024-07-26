@@ -49,6 +49,7 @@ def update(id: int,request: schemas.Blog, db:Session = Depends(get_db)):
     try:
         blog.update(request.dict())
         db.commit()
+        db.refresh(blog.first())
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
