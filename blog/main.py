@@ -43,17 +43,22 @@ def show(id, response:Response, db:Session = Depends(get_db)):
         # return {'detail':f"Blog with the id {id} is not found"}
     return blog
 
-@app.put('/blog/{id}', response_model=schemas.Update ,status_code=status.HTTP_202_ACCEPTED)
-def update(id: int,request: schemas.Blog, db:Session = Depends(get_db)):
-    blog = db.query(models.Blog).filter(models.Blog.id == id)
+@app.put('/blog/{id}', response_model=schemas.ShowBlog, status_code=status.HTTP_202_ACCEPTED)
+def update(id: int, request: schemas.Blog, db: Session = Depends(get_db)):
+    blog_query = db.query(models.Blog).filter(models.Blog.id == id)
+    blog = blog_query.first()
+    if not blog:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Blog with id {id} not found")
+
     try:
-        blog.update(request.dict())
+        blog_query.update(request.dict())
         db.commit()
-        db.refresh(blog.first())
+        db.refresh(blog)
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
-    return {'message': 'update successful'}
+
+    return blog
 
 @app.delete('/blog/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def destroy(id, db:Session = Depends(get_db)):
@@ -64,3 +69,11 @@ def destroy(id, db:Session = Depends(get_db)):
     db.commit()
     return blog
 
+@app.post('/user')
+def creare_user(request: schemas.User, db:Session = Depends(get_db)):
+    new_user = models.User(name=request.name, email=request.email, password=request.password)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return new_user
