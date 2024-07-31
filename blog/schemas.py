@@ -18,3 +18,9 @@ class User(BaseModel):
     name:str
     email: str
     password: str
+
+class UserView(BaseModel):
+    name:str
+    email: str
+    class config():
+        orm_mord = True

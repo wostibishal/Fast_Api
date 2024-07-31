@@ -6,3 +6,8 @@ secand way to open it if you have install uvicorn as server
 and it will reload every time when the file is saved
 using 
 uvicorn main:app --reload
+
+pip install uvicorn
+pip install sqlalchemy
+pip install passlib
+pip install bcrypt
