@@ -18,7 +18,7 @@ class User(BaseModel):
 class UserView(BaseModel):
     name:str
     email: str
-    blogs : List
+    blogs : List[Blog]=[]
     class config():
         orm_mord = True
 
