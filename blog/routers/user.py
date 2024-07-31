@@ -1,23 +1,19 @@
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends
 from requests import Session
-from blog import hashing, models, schemas, database
+from blog import schemas, database
+from blog.repository import user
 
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/users",
+    tags=['users'],
+)
 
-@router.post('/user', response_model=schemas.UserView, tags=['User'])
+@router.post('/', response_model=schemas.UserView, tags=['User'])
 def creare_user(request: schemas.User, db:Session = Depends(database.get_db)):
-    
-    new_user = models.User(name=request.name, email=request.email, password=hashing.Hash.bcrypt(request.password))
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return new_user
+    return user.create(request, db)
 
-@router.get('/user/{id}', response_model=schemas.UserView, tags=['User'] )
+@router.get('/{id}', response_model=schemas.UserView, tags=['User'] )
 def view_user(id:int, db:Session = Depends(database.get_db)):
-    user = db.query(models.User).filter(models.User.id == id).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with the id {id} is not available")
-    return user
+    return user.view(id,db)
