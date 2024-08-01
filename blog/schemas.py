@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 
 
@@ -29,3 +29,17 @@ class ShowBlog(BaseModel):
 
     class config():
         orm_mord = True
+
+class Login(BaseModel):
+    username: str
+    password: str
+
+    class config():
+        orm_mord = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
