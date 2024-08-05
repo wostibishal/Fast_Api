@@ -1,5 +1,5 @@
 from contextvars import Token
-from datetime import timedelta
+from datetime import timedelta, datetime
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from blog import schemas, database, models
@@ -8,10 +8,12 @@ from blog.hashing import Hash
 from blog.token import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 
 router = APIRouter(
+    prefix='/auth',
     tags=['Authentication']
+
 )
 
-@router.post('/login', response_model= schemas.TokenResponse)
+@router.post('/login', response_model= schemas.Token)
 async def login(request:schemas.Login, db: Session = Depends(database.get_db)):
     user = db.query(models.User).filter(models.User.email == request.username).first()
     if not user:

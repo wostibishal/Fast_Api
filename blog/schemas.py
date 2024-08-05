@@ -37,7 +37,7 @@ class Login(BaseModel):
     class config():
         orm_mord = True
 
-class TokenResponse(BaseModel):
+class Token(BaseModel):
     access_token: str
     token_type: str
 

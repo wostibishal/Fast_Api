@@ -1,7 +1,9 @@
 from passlib.context import CryptContext
+from fastapi.security import OAuth2PasswordBearer , OAuth2PasswordRequestForm
 
 
 pwd_cxt = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl = 'auth/token')
 
 class Hash():
     def bcrypt(password:str):
